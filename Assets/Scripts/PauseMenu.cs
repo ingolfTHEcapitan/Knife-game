@@ -3,19 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    // Ссылка на игровое меню паузы.
+    // РџРµСЂРµРґР°С‘Рј СЃСЃС‹Р»РєРё РЅР° РєР»Р°СЃСЃС‹
     public GameObject pauseMenu;
-
-    // Ссылка на менеджер аудио.
-    AudioManager audioManager;
+    private AudioManager audioManager;
 
     public bool isPaused;
 
-    // Вызывается при инициализации объекта скрипта.
+    // Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РѕР±СЉРµРєС‚Р° СЃРєСЂРёРїС‚Р°.
     private void Awake()
     {
-        // Находим и связываемся с менеджером аудио в сцене.
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+        // РќР°С…РѕРґРёРј СЌРєР·РµРјРїР»СЏСЂ СЃРєСЂРёРїС‚Р° РІ СЃС†РµРЅРµ
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Update()
@@ -52,14 +50,14 @@ public class PauseMenu : MonoBehaviour
     public void Restart()
     {
         Time.timeScale = 1f;
-        // Перезагружаем сцену
+        // РџРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј СЃС†РµРЅСѓ
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void Menu()
     {
         Time.timeScale = 1f;
-        // Загружаем сцену Main menu
+        // Р—Р°РіСЂСѓР¶Р°РµРј СЃС†РµРЅСѓ Main menu
         SceneManager.LoadSceneAsync("Main menu");
     }
 }

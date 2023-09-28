@@ -8,63 +8,57 @@ public class Knife : MonoBehaviour
     private bool isFlying;
     private bool hasPlayedSound = false;
 
-    // Передаём ссылку на класс отвечающий за управление счётом
+    // РџРµСЂРµРґР°С‘Рј СЃСЃС‹Р»РєРё РЅР° РєР»Р°СЃСЃС‹
     private ScoreManager scoreManager;
-    // Передаём ссылку на класс отвечающий за управление звуком
-    AudioManager audioManager;
+    private AudioManager audioManager;
 
     
-
-    private void Awake()
-    {
-        // Находим по тэгу экземпляр скрипта AudioManager в сцене
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
-    }
-
     private void Start()
     {
-        // Сохраняем место спауна ножа
+        // РЎРѕС…СЂР°РЅСЏРµРј РјРµСЃС‚Рѕ СЃРїР°СѓРЅР° РЅРѕР¶Р°
         startX = transform.position.x ;
-        // Находим экземпляр скрипта ScoreManager в сцене
-        scoreManager = FindObjectOfType<ScoreManager>(); 
+
+        // РќР°С…РѕРґРёРј СЌРєР·РµРјРїР»СЏСЂС‹ СЃРєСЂРёРїС‚РѕРІ РІ СЃС†РµРЅРµ
+        scoreManager = FindObjectOfType<ScoreManager>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     private void Update()
     {
-        // Если нажата левая кнопка мыши
+        // Р•СЃР»Рё РЅР°Р¶Р°С‚Р° Р»РµРІР°СЏ РєРЅРѕРїРєР° РјС‹С€Рё
         if (Input.GetMouseButtonDown(0))
         {
-            // Проверяем, что звук еще не воспроизведен
+            // РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ Р·РІСѓРє РµС‰Рµ РЅРµ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅ
             if (!hasPlayedSound) 
             {
-                // Воспроизводим звук вызывая метод PlaySFX из скрипта AudioManager
+                // Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє РІС‹Р·С‹РІР°СЏ РјРµС‚РѕРґ PlaySFX РёР· СЃРєСЂРёРїС‚Р° AudioManager
                 audioManager.PlaySFX(audioManager.miss);
-                // Устанавливаем, что звук воспроизведен
+                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј, С‡С‚Рѕ Р·РІСѓРє РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅ
                 hasPlayedSound = true; 
             }
 
-            // Устанавливаем, что нож летит
+            // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј, С‡С‚Рѕ РЅРѕР¶ Р»РµС‚РёС‚
             isFlying = true;
         }
 
-        // Если летим
+        // Р•СЃР»Рё Р»РµС‚РёРј
         if (isFlying)
         {
-            // Перемещаем объект в право
+            // РџРµСЂРµРјРµС‰Р°РµРј РѕР±СЉРµРєС‚ РІ РїСЂР°РІРѕ
             transform.Translate(Time.deltaTime * verticalSpeed, 0, 0);
         }
         else
         {
-            // Иначе перемещаемся вверх вниз по вертикали
+            // РРЅР°С‡Рµ РїРµСЂРµРјРµС‰Р°РµРјСЃСЏ РІРІРµСЂС… РІРЅРёР· РїРѕ РІРµСЂС‚РёРєР°Р»Рё
             transform.position = new Vector3(startX, Mathf.Sin(Time.time * 3) * 4f);
         }
 
-        // Если мы вышли за границы экрана
+        // Р•СЃР»Рё РјС‹ РІС‹С€Р»Рё Р·Р° РіСЂР°РЅРёС†С‹ СЌРєСЂР°РЅР°
         if (transform.position.x > 9)
         {
-            // Перезагружаем активную сцену по её индексу
+            // РџРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј Р°РєС‚РёРІРЅСѓСЋ СЃС†РµРЅСѓ РїРѕ РµС‘ РёРЅРґРµРєСЃСѓ
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            // Устанавливаем, что звук не воспроизведен
+            // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј, С‡С‚Рѕ Р·РІСѓРє РЅРµ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅ
             hasPlayedSound = false;
         }
     }
@@ -73,19 +67,19 @@ public class Knife : MonoBehaviour
     {
         if (!isFlying)
         {
-            // Если мы не летим не в цель, перезагружаем сцену
+            // Р•СЃР»Рё РјС‹ РЅРµ Р»РµС‚РёРј РЅРµ РІ С†РµР»СЊ, РїРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј СЃС†РµРЅСѓ
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        // Если попали в цель
+        // Р•СЃР»Рё РїРѕРїР°Р»Рё РІ С†РµР»СЊ
         else
         {
-            // Воспроизводим звук попадания
+            // Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє РїРѕРїР°РґР°РЅРёСЏ
             audioManager.PlaySFX(audioManager.attack);
-            // Удаляем объект по которому попали
+            // РЈРґР°Р»СЏРµРј РѕР±СЉРµРєС‚ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РїРѕРїР°Р»Рё
             Destroy(collision.gameObject);
             isFlying = false;
             hasPlayedSound = false;
-            // Вызываем метод IncreaseScore() скрипта ScoreManager для увеличения счёта
+            // Р’С‹Р·С‹РІР°РµРј РјРµС‚РѕРґ IncreaseScore() СЃРєСЂРёРїС‚Р° ScoreManager РґР»СЏ СѓРІРµР»РёС‡РµРЅРёСЏ СЃС‡С‘С‚Р°
             scoreManager.IncreaseScore(); 
           
         }

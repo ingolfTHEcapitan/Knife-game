@@ -2,25 +2,25 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // Передаём ссылку на класс со щитом
+    // РџРµСЂРµРґР°С‘Рј СЃСЃС‹Р»РєСѓ РЅР° РєР»Р°СЃСЃ СЃРѕ С‰РёС‚РѕРј
     public Target shield1;
     public Target shield2; 
 
     private void Start()
     {
-        // Повторяем исполнение метода Spawn с задеркой 
+        // РџРѕРІС‚РѕСЂСЏРµРј РёСЃРїРѕР»РЅРµРЅРёРµ РјРµС‚РѕРґР° Spawn СЃ Р·Р°РґРµСЂРєРѕР№ 
         InvokeRepeating("Spawn1", 2f, 1.5f);
         InvokeRepeating("Spawn2", 6f, 4f);
     }
 
     private void Spawn1()
     {
-        // Спауним объект щит 1
+        // РЎРїР°СѓРЅРёРј РѕР±СЉРµРєС‚ С‰РёС‚ 1
         Instantiate(shield1);
     }
     private void Spawn2()
     {
-        // Спауним объект щит 2
+        // РЎРїР°СѓРЅРёРј РѕР±СЉРµРєС‚ С‰РёС‚ 2
         Instantiate(shield2);
     }
 
