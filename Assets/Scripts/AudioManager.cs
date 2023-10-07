@@ -3,34 +3,35 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     [Header("Audio Sourse")]
-    [SerializeField] AudioSource musicSourse;   // Источник звука для фоновой музыки.
-    [SerializeField] AudioSource SFXSourse;     // Источник звука для звуковых эффектов.
+    [SerializeField] AudioSource musicSourse;   // РСЃС‚РѕС‡РЅРёРє Р·РІСѓРєР° РґР»СЏ С„РѕРЅРѕРІРѕР№ РјСѓР·С‹РєРё.
+    [SerializeField] AudioSource SFXSourse;     // РСЃС‚РѕС‡РЅРёРє Р·РІСѓРєР° РґР»СЏ Р·РІСѓРєРѕРІС‹С… СЌС„С„РµРєС‚РѕРІ.
 
     [Header("Audio clip")]
-    public AudioClip background; // Звук фоновой музыки.
-    public AudioClip attack;     // Звук атаки.
-    public AudioClip miss;       // Звук промаха.
+    public AudioClip background; // Р—РІСѓРє С„РѕРЅРѕРІРѕР№ РјСѓР·С‹РєРё.
+    public AudioClip attack;     // Р—РІСѓРє Р°С‚Р°РєРё.
+    public AudioClip miss;       // Р—РІСѓРє РїСЂРѕРјР°С…Р°.
 
     private void Start()
     {
-        // Устанавливаем фоновую музыку и начинаем её воспроизведение при старте скрипта.
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С„РѕРЅРѕРІСѓСЋ РјСѓР·С‹РєСѓ Рё РЅР°С‡РёРЅР°РµРј РµС‘ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёРµ РїСЂРё СЃС‚Р°СЂС‚Рµ СЃРєСЂРёРїС‚Р°.
         musicSourse.clip = background;
         musicSourse.Play();
     }
 
-    // Метод для воспроизведения звуковых эффектов.
+    // РњРµС‚РѕРґ РґР»СЏ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёСЏ Р·РІСѓРєРѕРІС‹С… СЌС„С„РµРєС‚РѕРІ.
     public void PlaySFX(AudioClip clip)
     {
         SFXSourse.PlayOneShot(clip);
+        
     }
 
-    // Метод для приостановки фоновой музыки.
+    // РњРµС‚РѕРґ РґР»СЏ РїСЂРёРѕСЃС‚Р°РЅРѕРІРєРё С„РѕРЅРѕРІРѕР№ РјСѓР·С‹РєРё.
     public void PauseMusic()
     {
         musicSourse.Pause();
     }
 
-    // Метод для возобновления воспроизведения фоновой музыки после паузы.
+    // РњРµС‚РѕРґ РґР»СЏ РІРѕР·РѕР±РЅРѕРІР»РµРЅРёСЏ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅРёСЏ С„РѕРЅРѕРІРѕР№ РјСѓР·С‹РєРё РїРѕСЃР»Рµ РїР°СѓР·С‹.
     public void UnPauseMusic()
     {
         musicSourse.UnPause();
