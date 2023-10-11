@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // Передаём ссылку на класс со щитом
-    public Target shield1;
-    public Target shield2; 
+    // Переменная для префабов обоих щитов
+    public GameObject shield1Prefab;
+    public GameObject shield2Prefab;
 
     private void Start()
     {
@@ -15,13 +15,24 @@ public class Spawner : MonoBehaviour
 
     private void Spawn1()
     {
-        // Спауним объект щит 1
-        Instantiate(shield1);
+        // Используем метод Instantiate() для создания новых экземпляров на сцене
+
+        /* Он создает копию указанного объекта, который 
+           может быть префабом, моделью или любым другим объектом */
+        var shield1 = Instantiate(shield1Prefab);
+
+        // Присваиваем каждому префабу класс Target.
+        var target = shield1.GetComponent<Target>();
+        target.SetSpeed(3f, 6f);
+        target.SetSize(1.5f, 3f);
     }
     private void Spawn2()
     {
-        // Спауним объект щит 2
-        Instantiate(shield2);
+      
+        var shield2 = Instantiate(shield2Prefab);
+        var target = shield2.GetComponent<Target>();
+        target.SetSpeed(2f, 4f);
+        target.SetSize(3.5f, 5f);
     }
-
 }
+

@@ -23,9 +23,7 @@ public class Knife : MonoBehaviour
         scoreManager = FindObjectOfType<ScoreManager>();
         audioManager = FindObjectOfType<AudioManager>();
 
-        // Находим GameObject на сцене
-        SoundFX = GameObject.Find("SFX");
-        // Получаем доступ к его компоненту
+        // Получаем доступ к компоненту
         audioSource = SoundFX.GetComponent<AudioSource>();
     }
 

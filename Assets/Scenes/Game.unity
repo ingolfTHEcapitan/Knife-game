@@ -585,6 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b2ced8b576a52408745537cc12a228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SoundFX: {fileID: 1252041820}
 --- !u!212 &387554259
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1375,7 +1376,7 @@ Transform:
   m_GameObject: {fileID: 1262881109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.35, y: -0.34, z: -0.10737429}
+  m_LocalPosition: {x: 8.96, y: -0.34, z: -0.10737429}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
