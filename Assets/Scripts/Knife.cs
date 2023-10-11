@@ -9,8 +9,8 @@ public class Knife : MonoBehaviour
     private bool hasPlayedSound = false;
 
     // Передаём ссылки на классы
-    private ScoreManager scoreManager;
-    private AudioManager audioManager;
+    [SerializeField] ScoreManager scoreManager;
+    [SerializeField] AudioManager audioManager;
     private AudioSource audioSource;
     public GameObject SoundFX;
 
@@ -19,11 +19,7 @@ public class Knife : MonoBehaviour
         // Сохраняем место спауна ножа
         startX = transform.position.x ;
 
-        // Находим экземпляры скриптов в сцене
-        scoreManager = FindObjectOfType<ScoreManager>();
-        audioManager = FindObjectOfType<AudioManager>();
-
-        // Получаем доступ к компоненту
+        // Получаем доступ к компоненту из AudioManager
         audioSource = SoundFX.GetComponent<AudioSource>();
     }
 

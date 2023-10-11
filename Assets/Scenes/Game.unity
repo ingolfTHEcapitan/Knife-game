@@ -1365,8 +1365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2f23d031fffecd439d668071f7be0d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shield1: {fileID: 4696568617667176137, guid: 5849b47395d505b4aa663470b69addb6, type: 3}
-  shield2: {fileID: 4696568617667176137, guid: c42fb3b8ff149c14985a533358a9c951, type: 3}
+  shield1Prefab: {fileID: 1552787307483633239, guid: 5849b47395d505b4aa663470b69addb6, type: 3}
+  shield2Prefab: {fileID: 1552787307483633239, guid: c42fb3b8ff149c14985a533358a9c951, type: 3}
 --- !u!4 &1262881111
 Transform:
   m_ObjectHideFlags: 0
