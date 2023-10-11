@@ -15,9 +15,9 @@ public class ScoreManager : MonoBehaviour
         highScoreText.SetText($"High Score: {PlayerPrefs.GetInt("highScore", 0)}");
     }
 
-    public void IncreaseScore()
+    public void IncreaseScore(int value)
     {
-        scoreNumber++;
+        scoreNumber += value;
 
         // Обновляем текст для поля текущего счета.
         scoreText.SetText($"Score: {scoreNumber}");

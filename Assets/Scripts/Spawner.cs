@@ -19,18 +19,18 @@ public class Spawner : MonoBehaviour
 
         /* Он создает копию указанного объекта, который 
            может быть префабом, моделью или любым другим объектом */
-        var shield1 = Instantiate(shield1Prefab);
+        GameObject shield1 = Instantiate(shield1Prefab);
 
         // Присваиваем каждому префабу класс Target.
-        var target = shield1.GetComponent<Target>();
+        Target target = shield1.GetComponent<Target>();
         target.SetSpeed(3f, 6f);
         target.SetSize(1.5f, 3f);
     }
     private void Spawn2()
     {
-      
-        var shield2 = Instantiate(shield2Prefab);
-        var target = shield2.GetComponent<Target>();
+
+        GameObject shield2 = Instantiate(shield2Prefab);
+        Target target = shield2.GetComponent<Target>();
         target.SetSpeed(2f, 4f);
         target.SetSize(3.5f, 5f);
     }

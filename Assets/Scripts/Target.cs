@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class Target : MonoBehaviour
 {
     
-    public float _speed;
+    private float _speed;
 
     public void SetSpeed(float minSpeed, float maxSpeed)
     {

@@ -73,23 +73,29 @@ public class Knife : MonoBehaviour
     {
         if (!isFlying)
         {
-            // Если мы не летим не в цель, перезагружаем сцену
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        // Если попали в цель
         else
         {
-           
             SetPitch(0.6f, 1.2f);
-            // Воспроизводим звук попадания
             audioManager.PlaySFX(audioManager.attack);
-            // Удаляем объект по которому попали
             Destroy(collision.gameObject);
             isFlying = false;
             hasPlayedSound = false;
-            // Вызываем метод IncreaseScore() скрипта ScoreManager для увеличения счёта
-            scoreManager.IncreaseScore();
 
+            // Получаем имя префаба, на который попали
+            string prefabName = collision.gameObject.name;
+
+            // В зависимости от имени префаба увеличиваем счет
+            switch (prefabName)
+            {
+                case "shield1(Clone)":
+                    scoreManager.IncreaseScore(1);
+                    break;
+                case "shield2(Clone)":
+                    scoreManager.IncreaseScore(5);
+                    break;
+            }
         }
     }
 
