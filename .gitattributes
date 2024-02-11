@@ -1,6 +1,1 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-*.*	working-tree-encoding=cp1251	eol=crlf
-git add --renormalize .
---ignore-revs-file
 

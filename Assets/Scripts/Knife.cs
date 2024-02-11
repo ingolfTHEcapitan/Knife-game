@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,59 +9,55 @@ public class Knife : MonoBehaviour
     private bool isFlying;
     private bool hasPlayedSound = false;
 
-    // РџРµСЂРµРґР°С‘Рј СЃСЃС‹Р»РєРё РЅР° РєР»Р°СЃСЃС‹
+    // Передаём ссылки на классы
     [SerializeField] ScoreManager scoreManager;
     [SerializeField] AudioManager audioManager;
-    private AudioSource audioSource;
-    public GameObject SoundFX;
-
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] PauseMenu pauseMenu;
     private void Start()
     {
-        // РЎРѕС…СЂР°РЅСЏРµРј РјРµСЃС‚Рѕ СЃРїР°СѓРЅР° РЅРѕР¶Р°
+        // Сохраняем место спауна ножа
         startX = transform.position.x ;
-
-        // РџРѕР»СѓС‡Р°РµРј РґРѕСЃС‚СѓРї Рє РєРѕРјРїРѕРЅРµРЅС‚Сѓ РёР· AudioManager
-        audioSource = SoundFX.GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        // Р•СЃР»Рё РЅР°Р¶Р°С‚Р° Р»РµРІР°СЏ РєРЅРѕРїРєР° РјС‹С€Рё
-        if (Input.GetMouseButtonDown(0))
+        // Если нажата левая кнопка мыши
+        if (Input.GetMouseButtonDown(0) && !pauseMenu.isPaused)
         {
-            // РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ Р·РІСѓРє РµС‰Рµ РЅРµ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅ
+            // Проверяем, что звук еще не воспроизведен
             if (!hasPlayedSound) 
             {
-                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РѕРЅ Р·РІСѓРєР°
+                // Устанавливаем тон звука
                 SetPitch(1f, 2f);
-                // Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє
+                // Воспроизводим звук
                 audioManager.PlaySFX(audioManager.miss);
-                // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј, С‡С‚Рѕ Р·РІСѓРє РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅ
+                // Устанавливаем, что звук воспроизведен
                 hasPlayedSound = true; 
             }
 
-            // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј, С‡С‚Рѕ РЅРѕР¶ Р»РµС‚РёС‚
+            // Устанавливаем, что нож летит
             isFlying = true;
         }
 
-        // Р•СЃР»Рё Р»РµС‚РёРј
+        // Если летим
         if (isFlying)
         {
-            // РџРµСЂРµРјРµС‰Р°РµРј РѕР±СЉРµРєС‚ РІ РїСЂР°РІРѕ
+            // Перемещаем объект в право
             transform.Translate(Time.deltaTime * verticalSpeed, 0, 0);
         }
         else
         {
-            // РРЅР°С‡Рµ РїРµСЂРµРјРµС‰Р°РµРјСЃСЏ РІРІРµСЂС… РІРЅРёР· РїРѕ РІРµСЂС‚РёРєР°Р»Рё
-            transform.position = new Vector3(startX, Mathf.Sin(Time.time * 3) * 4f);
+            // Иначе перемещаемся вверх вниз по вертикали
+            transform.position = new Vector2(startX, Mathf.Sin(Time.time * 3.3f) * 3.25f);
         }
 
-        // Р•СЃР»Рё РјС‹ РІС‹С€Р»Рё Р·Р° РіСЂР°РЅРёС†С‹ СЌРєСЂР°РЅР°
-        if (transform.position.x > 9)
+        // Если мы вышли за границы экрана
+        if (transform.position.x > 7.75f)
         {
-            // РџРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј Р°РєС‚РёРІРЅСѓСЋ СЃС†РµРЅСѓ РїРѕ РµС‘ РёРЅРґРµРєСЃСѓ
+            // Перезагружаем активную сцену по её индексу
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј, С‡С‚Рѕ Р·РІСѓРє РЅРµ РІРѕСЃРїСЂРѕРёР·РІРµРґРµРЅ
+            // Устанавливаем, что звук не воспроизведен
             hasPlayedSound = false;
         }
     }
@@ -75,28 +72,39 @@ public class Knife : MonoBehaviour
         {
             SetPitch(0.6f, 1.2f);
             audioManager.PlaySFX(audioManager.attack);
-            Destroy(collision.gameObject);
-            isFlying = false;
-            hasPlayedSound = false;
 
-            // РџРѕР»СѓС‡Р°РµРј РёРјСЏ РїСЂРµС„Р°Р±Р°, РЅР° РєРѕС‚РѕСЂС‹Р№ РїРѕРїР°Р»Рё
-            string prefabName = collision.gameObject.name;
-
-            // Р’ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РёРјРµРЅРё РїСЂРµС„Р°Р±Р° СѓРІРµР»РёС‡РёРІР°РµРј СЃС‡РµС‚
-            switch (prefabName)
+            // Проверяем, есть ли другие противники рядом с ножом в окружности радиусом 1f
+            // Метод возвращает массив всех коллайдеров, которые находятся внутри или пересекают эту окружность.
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 1f);
+            foreach (Collider2D collider in colliders)
             {
-                case "shield1(Clone)":
-                    scoreManager.IncreaseScore(1);
-                    break;
-                case "shield2(Clone)":
-                    scoreManager.IncreaseScore(5);
-                    break;
+                if (collider.CompareTag("Shield"))
+                {
+                    Destroy(collider.gameObject);
+
+                    // Получаем имя префаба, на который попали
+                    string prefabName = collider.gameObject.name;
+
+                    // В зависимости от имени префаба увеличиваем счет
+                    switch (prefabName)
+                    {
+                        case "shield1(Clone)":
+                            scoreManager.IncreaseScore(1);
+                            break;
+                        case "shield2(Clone)":
+                            scoreManager.IncreaseScore(5);
+                            break;
+                    }
+                }
             }
+
+            isFlying = false;
         }
     }
 
     private void SetPitch( float minRange, float maxRange)
     {
-        audioSource.pitch = Random.Range(minRange, maxRange);
+        audioSource.pitch = UnityEngine.Random.Range(minRange, maxRange);
+        
     }
 }

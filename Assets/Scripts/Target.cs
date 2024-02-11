@@ -8,32 +8,32 @@ public class Target : MonoBehaviour
 
     public void SetSpeed(float minSpeed, float maxSpeed)
     {
-        // Р—Р°РґР°С‘Рј СЃР»СѓС‡Р°Р№РЅСѓСЋ СЃРєРѕСЂРѕСЃС‚СЊ
+        // Задаём случайную скорость
         _speed = Random.Range(minSpeed, maxSpeed);
     }
 
     public void SetSize(float minSize, float maxSize)
     {
-        // Р—Р°РґР°С‘Рј СЃР»СѓС‡Р°РЅС‹Р№ СЂР°Р·РјРµСЂ РѕР±РµРєС‚Р° РІ РѕРїСЂРµРґРµР»С‘РЅРЅРѕРј РїСЂРѕРјРµР¶СѓС‚РєРµ
+        // Задаём случаный размер обекта в определённом промежутке
         transform.localScale = Vector3.one * Random.Range(minSize, maxSize);
     }
 
     private void Start()
     {
-        // Р—Р°РґР°РµРј РїРѕР·РёС†РёСЋ РїРѕСЏРІР»РµРЅРёСЏ РѕР±СЉРµРєС‚Р° РїРѕ РҐ РІ С‚РѕРј РјРµСЃС‚Рµ РіРґРµ РѕРЅ РЅР°С…РѕРґРёС‚СЃСЏ
-        // РџРѕ Y РІ СЃР»СѓС‡Р°Р№РЅРѕРј РјРµСЃС‚Рµ РІ РѕРїСЂРµРґРµР»С‘РЅРЅРѕРј РїСЂРѕРјРµР¶СѓС‚РєРµ
-        transform.localPosition = new Vector2(transform.localPosition.x, Random.Range(3.5f, -3.5f));
+        // Задаем позицию появления объекта по Х в том месте где он находится
+        // По Y в случайном месте в определённом промежутке
+        transform.localPosition = new Vector2(transform.localPosition.x, Random.Range(3.2f, -3.5f));
     }
 
     private void Update()
     {
-        // РџРµСЂРµРјРµС‰Р°РµРј РѕР±СЉРµРєС‚ РІ Р»РµРІРѕ
+        // Перемещаем объект в лево
         transform.Translate(-_speed * Time.deltaTime, 0, 0);
 
-        // Р•СЃР»Рё РѕР±СЉРµРєС‚ РїРѕ РҐ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹ СЌРєСЂР°РЅР°
-        if (transform.localPosition.x < -10) 
+        // Если объект по Х выходит за границы экрана
+        if (transform.localPosition.x < -9) 
         {
-            // РџРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј Р°РєС‚РёРІРЅСѓСЋ СЃС†РµРЅСѓ РїРѕ РµС‘ РёРЅРґРµРєСЃСѓ
+            // Перезагружаем активную сцену по её индексу
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }     
     }
