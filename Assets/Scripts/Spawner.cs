@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // Переменная для префабов обоих щитов
-    public GameObject shield1Prefab;
-    public GameObject shield2Prefab;
+    [SerializeField] Target shield1Prefab;
+    [SerializeField] Target shield2Prefab;
 
     private void Start()
     {
@@ -19,20 +18,18 @@ public class Spawner : MonoBehaviour
 
         /* Он создает копию указанного объекта, который 
            может быть префабом, моделью или любым другим объектом */
-        GameObject shield1 = Instantiate(shield1Prefab);
+        Target shield1 = Instantiate(shield1Prefab);
 
-        // Присваиваем каждому префабу класс Target.
-        Target target = shield1.GetComponent<Target>();
-        target.SetSpeed(3f, 6f);
-        target.SetSize(1.5f, 3f);
+        // Утанавливаем скорость и размер из класса Target.
+        shield1.SetSpeed(3f, 6f);
+        shield1.SetSize(1.5f, 3f);
     }
+
     private void Spawn2()
     {
-
-        GameObject shield2 = Instantiate(shield2Prefab);
-        Target target = shield2.GetComponent<Target>();
-        target.SetSpeed(2f, 4f);
-        target.SetSize(3.5f, 5f);
+        Target shield2 = Instantiate(shield2Prefab);
+        shield2.SetSpeed(2f, 4f);
+        shield2.SetSize(3.5f, 5f);
     }
 }
 
