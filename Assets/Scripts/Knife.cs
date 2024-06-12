@@ -80,6 +80,8 @@ public class Knife : MonoBehaviour
             {
                 if (collider.CompareTag("Shield"))
                 {
+                    GlobalEventManager.SendEnemyKilled();
+
                     Destroy(collider.gameObject);
 
                     // Получаем имя префаба, на который попали

@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
@@ -7,20 +9,32 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        // Повторяем исполнение метода Spawn с задеркой 
-        InvokeRepeating("Spawn1", 2f, 1.5f);
-        InvokeRepeating("Spawn2", 6f, 4f);
+        // ��������� �������� ��� ������ �����
+        StartCoroutine(Spawn1Routine());
+        StartCoroutine(Spawn2Routine());
+    }
+
+    private IEnumerator Spawn1Routine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(2f, 1.5f));
+            Spawn1(); 
+        }
+    }
+
+    private IEnumerator Spawn2Routine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(6f, 4f));
+            Spawn2();
+        }
     }
 
     private void Spawn1()
     {
-        // Используем метод Instantiate() для создания новых экземпляров на сцене
-
-        /* Он создает копию указанного объекта, который 
-           может быть префабом, моделью или любым другим объектом */
         Target shield1 = Instantiate(shield1Prefab);
-
-        // Утанавливаем скорость и размер из класса Target.
         shield1.SetSpeed(3f, 6f);
         shield1.SetSize(1.5f, 3f);
     }
@@ -32,4 +46,3 @@ public class Spawner : MonoBehaviour
         shield2.SetSize(3.5f, 5f);
     }
 }
-

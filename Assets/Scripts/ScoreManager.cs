@@ -3,7 +3,7 @@ using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    // РЎСЃС‹Р»РєРё РЅР° С‚РµРєСЃС‚РѕРІС‹Рµ РїРѕР»СЏ
+    // Ссылки на текстовые поля
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
 
@@ -11,29 +11,30 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСЃС‚ РґР»СЏ РїРѕР»СЏ High Score РёР· СЃРѕС…СЂР°РЅРµРЅРЅС‹С… РґР°РЅРЅС‹С….
+        // Устанавливаем текст для поля High Score из сохраненных данных.
         highScoreText.SetText($"High Score: {PlayerPrefs.GetInt("highScore", 0)}");
     }
+
 
     public void IncreaseScore(int value)
     {
         scoreNumber += value;
 
-        // РћР±РЅРѕРІР»СЏРµРј С‚РµРєСЃС‚ РґР»СЏ РїРѕР»СЏ С‚РµРєСѓС‰РµРіРѕ СЃС‡РµС‚Р°.
+        // Обновляем текст для поля текущего счета.
         scoreText.SetText($"Score: {scoreNumber}");
 
-        // РџСЂРѕРІРµСЂСЏРµРј, СѓСЃС‚Р°РЅРѕРІР»РµРЅ Р»Рё РЅРѕРІС‹Р№ СЂРµРєРѕСЂРґ, Рё РѕР±РЅРѕРІР»СЏРµРј РµРіРѕ РїСЂРё РЅРµРѕР±С…РѕРґРёРјРѕСЃС‚Рё.
+        // Проверяем, установлен ли новый рекорд, и обновляем его при необходимости.
         UpdateHighScore();
     }
 
     private void UpdateHighScore()
     {
-        // РџСЂРѕРІРµСЂСЏРµРј, РїСЂРµРІС‹С€Р°РµС‚ Р»Рё С‚РµРєСѓС‰РёР№ СЃС‡РµС‚ Р»СѓС‡С€РёР№ СЂРµР·СѓР»СЊС‚Р°С‚.
+        // Проверяем, превышает ли текущий счет лучший результат.
         if (scoreNumber > PlayerPrefs.GetInt("highScore", 0))
         {
-            // Р•СЃР»Рё РґР°, РѕР±РЅРѕРІР»СЏРµРј Р»СѓС‡С€РёР№ СЂРµР·СѓР»СЊС‚Р°С‚ РІ СЃРѕС…СЂР°РЅРµРЅРЅС‹С… РґР°РЅРЅС‹С….
+            // Если да, обновляем лучший результат в сохраненных данных.
             PlayerPrefs.SetInt("highScore", scoreNumber);
-            // РћР±РЅРѕРІР»СЏРµРј С‚РµРєСЃС‚ РґР»СЏ РїРѕР»СЏ "Р›СѓС‡С€РёР№ СЂРµР·СѓР»СЊС‚Р°С‚" РЅР° СЌРєСЂР°РЅРµ.
+            // Обновляем текст для поля "Лучший результат" на экране.
             highScoreText.SetText($"High Score: {scoreNumber}");
         }
     }
