@@ -4,16 +4,16 @@ using UnityEngine.SceneManagement;
 
 public class Knife : MonoBehaviour
 {
+    [SerializeField] ScoreManager scoreManager;
+    [SerializeField] AudioManager audioManager;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] PauseMenu pauseMenu;
+
     private const int verticalSpeed = 13;
     private float startX;
     private bool isFlying;
     private bool hasPlayedSound = false;
 
-    // Передаём ссылки на классы
-    [SerializeField] ScoreManager scoreManager;
-    [SerializeField] AudioManager audioManager;
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] PauseMenu pauseMenu;
     private void Start()
     {
         // Сохраняем место спауна ножа
@@ -91,10 +91,10 @@ public class Knife : MonoBehaviour
                     switch (prefabName)
                     {
                         case "shield1(Clone)":
-                            scoreManager.IncreaseScore(1);
+                            GlobalEventManager.CallEnemyKilled(1);
                             break;
                         case "shield2(Clone)":
-                            scoreManager.IncreaseScore(5);
+                            GlobalEventManager.CallEnemyKilled(5);
                             break;
                     }
                 }

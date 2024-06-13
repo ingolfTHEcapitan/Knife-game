@@ -3,7 +3,6 @@ using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    // —сылки на текстовые пол€
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI highScoreText;
 
@@ -13,6 +12,11 @@ public class ScoreManager : MonoBehaviour
     {
         // ”станавливаем текст дл€ пол€ High Score из сохраненных данных.
         highScoreText.SetText($"High Score: {PlayerPrefs.GetInt("highScore", 0)}");
+    }
+
+    private void Awake()
+    {
+        GlobalEventManager.enemyKilled.AddListener(IncreaseScore);
     }
 
 

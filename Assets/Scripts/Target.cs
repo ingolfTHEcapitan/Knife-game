@@ -8,20 +8,19 @@ public class Target : MonoBehaviour
 
     public void SetSpeed(float minSpeed, float maxSpeed)
     {
-        // Задаём случайную скорость
+        
         _speed = Random.Range(minSpeed, maxSpeed);
     }
 
     public void SetSize(float minSize, float maxSize)
     {
-        // Задаём случаный размер обекта в определённом промежутке
+        // Задаём случаный размер обекта
         transform.localScale = Vector3.one * Random.Range(minSize, maxSize);
     }
 
     private void Start()
     {
-        // Задаем позицию появления объекта по Х в том месте где он находится
-        // По Y в случайном месте в определённом промежутке
+        // Задаем случаную позицию появления объекта
         transform.localPosition = new Vector2(transform.localPosition.x, Random.Range(3.2f, -3.5f));
     }
 
@@ -37,4 +36,6 @@ public class Target : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }     
     }
+
+
 }
