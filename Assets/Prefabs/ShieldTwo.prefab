@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3108720826471006021}
   - component: {fileID: 6078338998839690131}
   m_Layer: 0
-  m_Name: shield2
+  m_Name: ShieldTwo
   m_TagString: Shield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552787307483633239}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.48541597, z: -0, w: 0.8742833}
-  m_LocalPosition: {x: 10.82, y: 0.18, z: -6.67}
-  m_LocalScale: {x: 2.616126, y: 2.616126, z: 2.616126}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 58.079, z: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &9132254474723661345
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -99,6 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c58f6f8268c3c44bb2297d3f3be7d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _minSpeed: 2
+  _maxSpeed: 4
+  _minSize: 3.5
+  _maxSize: 5
 --- !u!61 &3108720826471006021
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -109,25 +113,6 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -161,12 +146,6 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
