@@ -4,38 +4,29 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] Target shield1Prefab;
-    [SerializeField] Target shield2Prefab;
+	[SerializeField] private Shield _shieldOnePrefab;
+	[SerializeField] private Shield _shieldTwoPrefab;
+	
+	private Vector3 _spawnPosition;
 
-    private void Start()
-    {
-        // Запускаем корутины для спавна щитов
-        StartCoroutine(Spawn1Routine());
-        StartCoroutine(Spawn2Routine());
-    }
+	private void Start()
+	{
+		_spawnPosition = new Vector3 (transform.position.x, Random.Range(3.2f, -3.5f));
+		
+		// Задаем случаную позицию появления объекта
+		transform.position = _spawnPosition;
+		
+		// Запускаем корутины для спавна щитов
+		StartCoroutine(SpawnRoutine(_shieldOnePrefab,2f, 1.5f));
+		StartCoroutine(SpawnRoutine(_shieldTwoPrefab, 6f, 4f));
+	}
 
-    private IEnumerator Spawn1Routine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(2f, 1.5f));
-            Spawn(shield1Prefab, 3f, 6f, 1.5f, 3f); 
-        }
-    }
-
-    private IEnumerator Spawn2Routine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(6f, 4f));
-            Spawn(shield2Prefab, 2f, 4f, 3.5f, 5f);
-        }
-    }
-
-    private void Spawn(Target prefab, float speedMin, float speedmax, float sizeMin, float sizeMax)
-    {
-        Target shield = Instantiate(prefab);
-        shield.SetSpeed(speedMin, speedmax);
-        shield.SetSize(sizeMin, sizeMax);
-    }
+	private IEnumerator SpawnRoutine(Shield target, float minSpawnDelay, float maxSpawnDelay)
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(Random.Range(minSpawnDelay, maxSpawnDelay));
+			Instantiate(target, _spawnPosition, Quaternion.Euler(0, 60, 0)); 
+		}
+	}
 }
