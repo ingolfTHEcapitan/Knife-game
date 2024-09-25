@@ -103,7 +103,7 @@ MonoBehaviour:
   _maxSpeed: 4
   _minSize: 3.5
   _maxSize: 5
-  _scoreValue: 0
+  _scoreValue: 5
 --- !u!61 &3108720826471006021
 BoxCollider2D:
   m_ObjectHideFlags: 0

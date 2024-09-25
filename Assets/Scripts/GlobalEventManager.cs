@@ -3,19 +3,11 @@ using UnityEngine.Events;
 
 public class GlobalEventManager
 {
-    public static event Action onEnemyKilled;
-    public static UnityEvent <int> enemyKilled = new UnityEvent<int>();
-
-
-    public static void SendEnemyKilled()
+    public static event Action<int> EnemyKilled;
+  
+    public static void OnEnemyKilled(int scoreValue)
     {
-       if(onEnemyKilled != null) onEnemyKilled.Invoke();
+        EnemyKilled?.Invoke(scoreValue);
     }
-
-    public static void CallEnemyKilled(int reward)
-    {
-        if (enemyKilled != null) enemyKilled.Invoke(reward);
-    }
-
 }
 

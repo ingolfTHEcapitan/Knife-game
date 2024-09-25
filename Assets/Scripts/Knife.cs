@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -73,32 +72,18 @@ public class Knife : MonoBehaviour
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
-		else if (collider.CompareTag("Shield"))
+		else if (TryGetComponent(out Shield shield))
 		{
 			_boxCollider2D.enabled = false;
 			
 			SetPitch(0.6f, 1.2f);
 			audioManager.PlaySFX(audioManager.attack);
 			
-			GlobalEventManager.SendEnemyKilled();
+			GlobalEventManager.CallEnemyKilled(shield.ScoreValue);
 
 			Destroy(collider.gameObject);
-
-			// Получаем имя префаба, на который попали
-			string prefabName = collider.gameObject.name;
-
-			// В зависимости от имени префаба увеличиваем счет
-			switch (prefabName)
-			{
-				case "ShieldOne(Clone)":
-					GlobalEventManager.CallEnemyKilled(1);
-					break;
-				case "ShieldTwo(Clone)":
-					GlobalEventManager.CallEnemyKilled(5);
-					break;
-			}
 			
-			 isFlying = false;
+			isFlying = false;
 		}
 	}
 	

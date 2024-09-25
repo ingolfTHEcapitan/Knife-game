@@ -14,11 +14,8 @@ public class ScoreManager : MonoBehaviour
         highScoreText.SetText($"High Score: {PlayerPrefs.GetInt("highScore", 0)}");
     }
 
-    private void Awake()
-    {
-        GlobalEventManager.enemyKilled.AddListener(IncreaseScore);
-    }
-
+    void OnEnable() => GlobalEventManager.EnemyKilled += IncreaseScore;
+    void OnDisable() => GlobalEventManager.EnemyKilled -= IncreaseScore;
 
     public void IncreaseScore(int value)
     {

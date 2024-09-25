@@ -7,9 +7,12 @@ public class Shield : MonoBehaviour
 	[SerializeField] private float _maxSpeed;
 	[SerializeField] private float _minSize;
 	[SerializeField] private float _maxSize;
+	[SerializeField] private int _scoreValue;
 	
 	private float _speed;
 	
+	public int ScoreValue { get => _scoreValue;}
+
 	private void Start()
 	{
 		// Задаем случаную скорость объекта
