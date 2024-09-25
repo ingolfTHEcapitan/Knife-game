@@ -1,32 +1,52 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-	[SerializeField] private Shield _shieldOnePrefab;
-	[SerializeField] private Shield _shieldTwoPrefab;
+	[SerializeField] private SpawnObject[] _spawnObjects;
 	
-	private Vector3 _spawnPosition;
-
 	private void Start()
 	{
-		_spawnPosition = new Vector3 (transform.position.x, Random.Range(3.2f, -3.5f));
-		
-		// Задаем случаную позицию появления объекта
-		transform.position = _spawnPosition;
-		
-		// Запускаем корутины для спавна щитов
-		StartCoroutine(SpawnRoutine(_shieldOnePrefab,2f, 1.5f));
-		StartCoroutine(SpawnRoutine(_shieldTwoPrefab, 6f, 4f));
-	}
-
-	private IEnumerator SpawnRoutine(Shield target, float minSpawnDelay, float maxSpawnDelay)
-	{
-		while (true)
+		foreach (var spawnObject in _spawnObjects)
 		{
-			yield return new WaitForSeconds(Random.Range(minSpawnDelay, maxSpawnDelay));
-			Instantiate(target, _spawnPosition, Quaternion.Euler(0, 60, 0)); 
+			StartCoroutine(SpawnRoutine(spawnObject));
 		}
 	}
+
+	private IEnumerator SpawnRoutine(SpawnObject spawnObject)
+	{
+		Shield shield = spawnObject.ShieldPrefab;
+		float minDelay = spawnObject.SpawnDelay.MinDelay;
+		float maxDelay = spawnObject.SpawnDelay.MaxDelay;
+		
+		while (true)
+		{
+			yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
+			
+			Vector3 _spawnPosition = new Vector3 (transform.position.x, Random.Range(3.2f, -3.5f));
+			Instantiate(shield, _spawnPosition, Quaternion.Euler(0,60, 0)); 
+		}
+	}
+}
+
+[Serializable]
+public struct SpawnObject
+{
+	[SerializeField] private Shield _shieldPrefab;
+	[SerializeField] private SpawnDelay _spawnDelay;
+
+	public Shield ShieldPrefab => _shieldPrefab;
+	public SpawnDelay SpawnDelay => _spawnDelay;
+}
+
+[Serializable]
+public struct SpawnDelay
+{
+	[SerializeField] private float _minDelay;
+	[SerializeField] private float _maxDelay;
+
+	public float MinDelay => _minDelay;
+	public float MaxDelay  => _maxDelay;
 }
