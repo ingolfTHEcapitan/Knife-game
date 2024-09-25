@@ -12,7 +12,7 @@ public class Knife : MonoBehaviour
 	private float startX;
 	private bool isFlying;
 	private BoxCollider2D _boxCollider2D;
-	 private bool hasPlayedSound = false;
+	private bool hasPlayedSound = false;
 
 	void Awake()
 	{
@@ -72,14 +72,14 @@ public class Knife : MonoBehaviour
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
-		else if (TryGetComponent(out Shield shield))
+		else if (collider.TryGetComponent(out Shield shield))
 		{
 			_boxCollider2D.enabled = false;
 			
 			SetPitch(0.6f, 1.2f);
 			audioManager.PlaySFX(audioManager.attack);
 			
-			GlobalEventManager.CallEnemyKilled(shield.ScoreValue);
+			GlobalEventManager.OnEnemyKilled(shield.ScoreValue);
 
 			Destroy(collider.gameObject);
 			

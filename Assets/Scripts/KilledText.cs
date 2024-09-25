@@ -1,26 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class KilledText : MonoBehaviour
 {
-    private int killed;
-    
-    void Start()
-    {
-        GlobalEventManager.onEnemyKilled += EnemyKilled;
-    }
+	private int _killedValue;
+	private TextMeshProUGUI _killedText;
+	
+	private void Awake() => _killedText = GetComponent<TextMeshProUGUI>();
 
-    private void OnDestroy()
-    {
-        GlobalEventManager.onEnemyKilled -= EnemyKilled;
-    }
+	private void OnEnable() => GlobalEventManager.EnemyKilled += (_)=> EnemyKilled();
 
+	private void OnDestroy() => GlobalEventManager.EnemyKilled -= (_)=> EnemyKilled();
 
-    private void EnemyKilled()
-    {
-        killed++;
-        GetComponent<TextMeshProUGUI>().text = "Killed: " + killed;
-    }
+	private void EnemyKilled()
+	{
+		_killedValue++;
+		_killedText.text = "Killed: " + _killedValue;
+	}
 }
