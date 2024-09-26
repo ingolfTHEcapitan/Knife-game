@@ -3,57 +3,45 @@ using UnityEngine.SceneManagement;
 
 public class Knife : MonoBehaviour
 {
-	[SerializeField] ScoreManager scoreManager;
-	[SerializeField] AudioManager audioManager;
-	[SerializeField] AudioSource audioSource;
-	[SerializeField] PauseMenu pauseMenu;
-
-	private const int verticalSpeed = 13;
-	private float startX;
-	private bool isFlying;
+	private const int _verticalSpeed = 13;
+	private float _startXposition;
+	private bool _isFlying;
 	private BoxCollider2D _boxCollider2D;
-	private bool hasPlayedSound = false;
 
 	void Awake()
 	{
 		_boxCollider2D = GetComponent<BoxCollider2D>();
 		
 		// Сохраняем место спауна ножа
-		startX = transform.position.x;
+		_startXposition = transform.position.x;
 	}
 
 	private void Update()
 	{
 		// Если нажата левая кнопка мыши
-		if (Input.GetMouseButtonDown(0) && !pauseMenu.isPaused)
+		if (Input.GetMouseButtonDown(0) && !PauseMenu.Instance.IsPaused)
 		{
-			 // Проверяем, что звук еще не воспроизведен
-			if (!hasPlayedSound) 
+			if (!_isFlying) 
 			{
-				// Устанавливаем тон звука
-				SetPitch(1f, 2f);
-				// Воспроизводим звук
-				audioManager.PlaySFX(audioManager.miss);
-				// Устанавливаем, что звук воспроизведен
-				hasPlayedSound = true; 
+				AudioManager.Instance.PlaySound(AudioManager.Instance.Attack);
 			}
 
 			// Устанавливаем, что нож летит
-			isFlying = true;
+			_isFlying = true;
 		}
 
 		// Если летим
-		if (isFlying)
+		if (_isFlying)
 		{
 			// Перемещаем объект в право
-			transform.Translate(Time.deltaTime * verticalSpeed, 0, 0);
+			transform.Translate(Time.deltaTime * _verticalSpeed, 0, 0);
 			_boxCollider2D.enabled = true;
 		}
 		else
 		{
 			_boxCollider2D.enabled = true;
 			// Иначе перемещаемся вверх вниз по вертикали
-			transform.position = new Vector2(startX, Mathf.Sin(Time.time * 3.3f) * 3.25f);
+			transform.position = new Vector2(_startXposition, Mathf.Sin(Time.time * 3.3f) * 3.25f);
 		}
 
 		// Если мы вышли за границы экрана
@@ -61,35 +49,26 @@ public class Knife : MonoBehaviour
 		{
 			// Перезагружаем активную сцену по её индексу
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-			// Устанавливаем, что звук не воспроизведен
-			hasPlayedSound = false;
 		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collider)
 	{
-		if (!isFlying && _boxCollider2D.enabled)
+		if (!_isFlying && _boxCollider2D.enabled)
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 		else if (collider.TryGetComponent(out Shield shield))
 		{
-			_boxCollider2D.enabled = false;
+			AudioManager.Instance.PlaySound(AudioManager.Instance.Stomp);
 			
-			SetPitch(0.6f, 1.2f);
-			audioManager.PlaySFX(audioManager.attack);
+			_boxCollider2D.enabled = false;
 			
 			GlobalEventManager.OnEnemyKilled(shield.ScoreValue);
 
 			Destroy(collider.gameObject);
 			
-			isFlying = false;
+			_isFlying = false;
 		}
-	}
-	
-	private void SetPitch( float minRange, float maxRange)
-	{
-		audioSource.pitch = UnityEngine.Random.Range(minRange, maxRange);
-		
 	}
 }

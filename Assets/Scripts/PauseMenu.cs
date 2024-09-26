@@ -3,62 +3,63 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    // РџРµСЂРµРґР°С‘Рј СЃСЃС‹Р»РєРё РЅР° РєР»Р°СЃСЃС‹
-    public GameObject pauseMenu;
-    private AudioManager audioManager;
+	[SerializeField] GameObject _pauseMenu;
+	
+	public bool IsPaused {get; private set;}
+	
+	public static PauseMenu Instance {get; private set;}
 
-    public bool isPaused;
+	 private void Awake() 
+	{
+		//Проверьяем, существует ли уже экземпляр Food
+		if (Instance == null)
+			// Если нет делаем текщий экземпляр основным
+			Instance = this;
+		else if (Instance != this) // Если существует
+			Destroy(gameObject); // Удаляем, реализирует принцип Синглтон, точто что экземпляр класса может быть только один
+	}
+	
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (IsPaused) 
+			{
+				ResumeGame();
+			}
+			else
+			{
+				PauseGame();
+			}
+		}
+	}
 
-    // Р’С‹Р·С‹РІР°РµС‚СЃСЏ РїСЂРё РёРЅРёС†РёР°Р»РёР·Р°С†РёРё РѕР±СЉРµРєС‚Р° СЃРєСЂРёРїС‚Р°.
-    private void Awake()
-    {
-        // РќР°С…РѕРґРёРј СЌРєР·РµРјРїР»СЏСЂ СЃРєСЂРёРїС‚Р° РІ СЃС†РµРЅРµ
-        audioManager = FindObjectOfType<AudioManager>();
-    }
+	public void ResumeGame()
+	{
+		AudioManager.Instance.UnPauseMusic();
+		_pauseMenu.SetActive(false);
+		Time.timeScale = 1.0f;
+		IsPaused = false;
+	}
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPaused) 
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
-        }
-    }
+	public void PauseGame()
+	{
+		AudioManager.Instance.PauseMusic();
+		_pauseMenu.SetActive(true);
+		Time.timeScale = 0.0f;
+		IsPaused = true;
+	}
 
-    public void ResumeGame()
-    {
-        audioManager.UnPauseMusic();
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
-    }
+	public void Restart()
+	{
+		Time.timeScale = 1.0f;
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
 
-    public void PauseGame()
-    {
-        audioManager.PauseMusic();
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
-    }
-
-    public void Restart()
-    {
-        Time.timeScale = 1f;
-        // РџРµСЂРµР·Р°РіСЂСѓР¶Р°РµРј СЃС†РµРЅСѓ
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void Menu()
-    {
-        Time.timeScale = 1f;
-        // Р—Р°РіСЂСѓР¶Р°РµРј СЃС†РµРЅСѓ Main menu
-        SceneManager.LoadSceneAsync("Main menu");
-    }
+	public void Menu()
+	{
+		Time.timeScale = 1.0f;
+		SceneManager.LoadSceneAsync("Main menu");
+	}
 }
 
