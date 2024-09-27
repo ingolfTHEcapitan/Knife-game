@@ -3,7 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class Knife : MonoBehaviour
 {
-	private const int _verticalSpeed = 13;
+	[SerializeField] private float _horizontalSpeed = 13.0f;
+	[SerializeField] private float _verticalSpeed = 3.3f;
+	
 	private float _startXposition;
 	private bool _isFlying;
 	private BoxCollider2D _boxCollider2D;
@@ -34,14 +36,14 @@ public class Knife : MonoBehaviour
 		if (_isFlying)
 		{
 			// Перемещаем объект в право
-			transform.Translate(Time.deltaTime * _verticalSpeed, 0, 0);
+			transform.Translate(Time.deltaTime * _horizontalSpeed, 0, 0);
 			_boxCollider2D.enabled = true;
 		}
 		else
 		{
 			_boxCollider2D.enabled = true;
 			// Иначе перемещаемся вверх вниз по вертикали
-			transform.position = new Vector2(_startXposition, Mathf.Sin(Time.time * 3.3f) * 3.25f);
+			transform.position = new Vector2(_startXposition, Mathf.Sin(Time.time * _verticalSpeed) * 3.25f);
 		}
 
 		// Если мы вышли за границы экрана
