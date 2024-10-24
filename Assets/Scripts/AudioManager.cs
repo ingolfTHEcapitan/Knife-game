@@ -3,8 +3,8 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 	[Header("Audio Sourse")]
-	[SerializeField] private AudioSource _musicSourse;   // Источник звука для фоновой музыки
-	[SerializeField] private AudioSource _effectsSourse;     // Источник звука для звуковых эффектов
+	[SerializeField] private AudioSource _musicSourse;
+	[SerializeField] private AudioSource _effectsSourse;
 
 	[Header("Audio clip")]
 	[SerializeField] private AudioClip _backgroundMusic; 
@@ -17,37 +17,25 @@ public class AudioManager : MonoBehaviour
 
     private void Awake() 
 	{
-		//Проверьяем, существует ли уже экземпляр Food
 		if (Instance == null)
-			// Если нет делаем текщий экземпляр основным
 			Instance = this;
-		else if (Instance != this) // Если существует
-			Destroy(gameObject); // Удаляем, реализирует принцип Синглтон, точто что экземпляр класса может быть только один
+		else if (Instance != this)
+			Destroy(gameObject);
 	}
 
 	private void Start()
 	{
-		// Устанавливаем фоновую музыку
 		_musicSourse.clip = _backgroundMusic;
 		_musicSourse.Play();
 	}
 
-	// Метод для воспроизведения звуковых эффектов
 	public void PlaySound(AudioClip clip)
 	{
 		_effectsSourse.PlayOneShot(clip); 
 		_effectsSourse.pitch = Random.Range(0.9f, 1.2f);
 	}
 
-	// Метод для приостановки фоновой музыки
-	public void PauseMusic()
-	{
-		_musicSourse.Pause();
-	}
+    public void PauseMusic() => _musicSourse.Pause();
 
-	// Метод для возобновления воспроизведения фоновой музыки после паузы
-	public void UnPauseMusic()
-	{
-		_musicSourse.UnPause();
-	}
+    public void UnPauseMusic() => _musicSourse.UnPause();
 }

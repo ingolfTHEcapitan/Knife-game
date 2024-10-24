@@ -3,26 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class MainManu : MonoBehaviour
 {
-    // Сдесь каждая функция привязанна к своей кнопке в юнити
+    public void PlayGame() => SceneManager.LoadSceneAsync("Game");
 
-    // Кнопка Play
-    public void PlayGame()
-    {
-        // Загружаем сцену "Game"
-        SceneManager.LoadSceneAsync("Game");
-    }
+    public void Reset() => PlayerPrefs.DeleteKey("highScore");
 
-    // Кнопка Reset
-    public void Reset()
-    {
-        // Удаляем сохранённые данные поля highScore
-        PlayerPrefs.DeleteKey("highScore");
-    }
-
-    // Кнопка Exit
-    public void Exit()
-    {
-        // Выход их игры
-        Application.Quit();
-    }
+    public void Exit() => Application.Quit();
 }

@@ -6,17 +6,14 @@ public class PauseMenu : MonoBehaviour
 	[SerializeField] GameObject _pauseMenu;
 	
 	public bool IsPaused {get; private set;}
-	
 	public static PauseMenu Instance {get; private set;}
 
-	 private void Awake() 
+	private void Awake() 
 	{
-		//Проверьяем, существует ли уже экземпляр Food
 		if (Instance == null)
-			// Если нет делаем текщий экземпляр основным
 			Instance = this;
-		else if (Instance != this) // Если существует
-			Destroy(gameObject); // Удаляем, реализирует принцип Синглтон, точто что экземпляр класса может быть только один
+		else if (Instance != this)
+			Destroy(gameObject);
 	}
 	
 	void Update()
@@ -24,13 +21,9 @@ public class PauseMenu : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			if (IsPaused) 
-			{
 				ResumeGame();
-			}
 			else
-			{
 				PauseGame();
-			}
 		}
 	}
 

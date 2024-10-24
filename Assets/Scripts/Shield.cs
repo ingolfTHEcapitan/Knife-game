@@ -11,26 +11,26 @@ public class Shield : MonoBehaviour
 	
 	private float _speed;
 	
-	public int ScoreValue { get => _scoreValue;}
+	public int ScoreValue => _scoreValue;
 
 	private void Start()
 	{
-		// Задаем случаную скорость объекта
-		_speed = Random.Range(_minSpeed, _maxSpeed);
+		float randomSpeed = Random.Range(_minSpeed, _maxSpeed);
+		_speed = randomSpeed;
 		
-		// Задаём случаный размер обекта
-		transform.localScale = Vector3.one * Random.Range(_minSize, _maxSize);
+		Vector2 randomScale = Vector2.one * Random.Range(_minSize, _maxSize);
+		transform.localScale = randomScale;
 	}
 
 	private void Update()
 	{
-		// Перемещаем объект в лево
-		transform.Translate(-_speed * Time.deltaTime, 0, 0);
+		float movementSpeed = _speed;
+		float leftBoundaryX = -9;
 
-		// Если объект по Х выходит за границы экрана
-		if (transform.localPosition.x < -9) 
+		transform.Translate(-movementSpeed * Time.deltaTime, 0, 0);
+
+		if (transform.localPosition.x < leftBoundaryX)
 		{
-			// Перезагружаем активную сцену по её индексу
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}     
 	}

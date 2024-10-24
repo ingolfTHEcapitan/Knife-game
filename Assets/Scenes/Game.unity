@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _horizontalSpeed: 15
-  _verticalSpeed: 6
+  _verticalSpeed: 5
 --- !u!212 &387554259
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1384,7 +1384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 426032534b7d8114ba47067aced24c89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scoreText: {fileID: 1753924058}
+  _currentScoreText: {fileID: 1753924058}
   _highScoreText: {fileID: 160371683}
 --- !u!1 &1252041820
 GameObject:

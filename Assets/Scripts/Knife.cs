@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class Knife : MonoBehaviour
 {
 	[SerializeField] private float _horizontalSpeed = 13.0f;
-	[SerializeField] private float _verticalSpeed = 3.3f;
+	[SerializeField] private float _verticalOscillationSpeed = 3.3f;
 	
 	private float _startXposition;
 	private bool _isFlying;
@@ -14,42 +14,40 @@ public class Knife : MonoBehaviour
 	{
 		_boxCollider2D = GetComponent<BoxCollider2D>();
 		
-		// Сохраняем место спауна ножа
 		_startXposition = transform.position.x;
 	}
 
 	private void Update()
 	{
-		// Если нажата левая кнопка мыши
-		if (Input.GetMouseButtonDown(0) && !PauseMenu.Instance.IsPaused)
+		int leftButton = 0;
+		float horizontalMovementLimit = 7.75f;
+		float verticalMovementLimit = 3.25f;
+		
+		if (Input.GetMouseButtonDown(leftButton) && !PauseMenu.Instance.IsPaused)
 		{
 			if (!_isFlying) 
 			{
 				AudioManager.Instance.PlaySound(AudioManager.Instance.Attack);
 			}
 
-			// Устанавливаем, что нож летит
 			_isFlying = true;
 		}
 
-		// Если летим
 		if (_isFlying)
 		{
-			// Перемещаем объект в право
-			transform.Translate(Time.deltaTime * _horizontalSpeed, 0, 0);
+			transform.Translate(_horizontalSpeed * Time.deltaTime , 0, 0);
 			_boxCollider2D.enabled = true;
 		}
 		else
 		{
 			_boxCollider2D.enabled = true;
-			// Иначе перемещаемся вверх вниз по вертикали
-			transform.position = new Vector2(_startXposition, Mathf.Sin(Time.time * _verticalSpeed) * 3.25f);
+			
+			float verticalPosition = Mathf.Sin(_verticalOscillationSpeed * Time.time) * verticalMovementLimit;
+			transform.position = new Vector2(_startXposition, verticalPosition);
 		}
 
-		// Если мы вышли за границы экрана
-		if (transform.position.x > 7.75f)
+		if (transform.position.x > horizontalMovementLimit)
 		{
-			// Перезагружаем активную сцену по её индексу
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
@@ -66,7 +64,7 @@ public class Knife : MonoBehaviour
 			
 			_boxCollider2D.enabled = false;
 			
-			GlobalEventManager.OnEnemyKilled(shield.ScoreValue);
+			GlobalEvents.OnEnemyKilled(shield.ScoreValue);
 
 			Destroy(collider.gameObject);
 			

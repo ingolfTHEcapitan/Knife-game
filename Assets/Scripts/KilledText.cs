@@ -8,9 +8,9 @@ public class KilledText : MonoBehaviour
 	
 	private void Awake() => _killedText = GetComponent<TextMeshProUGUI>();
 
-	private void OnEnable() => GlobalEventManager.EnemyKilled += (_)=> EnemyKilled();
+	private void OnEnable() => GlobalEvents.EnemyKilled += (_)=> EnemyKilled();
 
-	private void OnDestroy() => GlobalEventManager.EnemyKilled -= (_)=> EnemyKilled();
+	private void OnDestroy() => GlobalEvents.EnemyKilled -= (_)=> EnemyKilled();
 
 	private void EnemyKilled()
 	{

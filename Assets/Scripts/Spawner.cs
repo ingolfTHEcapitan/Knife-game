@@ -25,7 +25,7 @@ public class Spawner : MonoBehaviour
 		{
 			yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
 			
-			Vector3 _spawnPosition = new Vector3 (transform.position.x, Random.Range(3.2f, -3.5f));
+			Vector2 _spawnPosition = new Vector2(transform.position.x, Random.Range(3.2f, -3.5f));
 			Instantiate(shield, _spawnPosition, Quaternion.Euler(0,60, 0)); 
 		}
 	}
