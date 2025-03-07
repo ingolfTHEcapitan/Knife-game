@@ -18,15 +18,15 @@ public class Spawner : MonoBehaviour
 	private IEnumerator SpawnRoutine(SpawnObject spawnObject)
 	{
 		Shield shield = spawnObject.Prefab;
-		float minDelay = spawnObject.Delay.Min;
-		float maxDelay = spawnObject.Delay.Max;
+		float minDelay = spawnObject.MinDelay;
+		float maxDelay = spawnObject.MaxDelay;
 		
 		while (true)
 		{
 			yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
 			
-			Vector2 _spawnPosition = new Vector2(transform.position.x, Random.Range(3.2f, -3.5f));
-			Instantiate(shield, _spawnPosition, Quaternion.Euler(0,60, 0)); 
+			Vector2 _spawnPosition = new Vector2(transform.position.x, Random.Range(3.2f,-3.5f));
+			Instantiate(shield, _spawnPosition, Quaternion.Euler(0, 60, 0)); 
 		}
 	}
 }
@@ -35,12 +35,6 @@ public class Spawner : MonoBehaviour
 public struct SpawnObject
 {
 	[field: SerializeField] public Shield Prefab;
-	[field: SerializeField]  public SpawnDelay Delay;
-}
-
-[Serializable]
-public struct SpawnDelay
-{
-	[field: SerializeField] public float Min;
-	[field: SerializeField] public float Max;
+	[field: SerializeField]  public float MinDelay;
+	[field: SerializeField]  public float MaxDelay;
 }
