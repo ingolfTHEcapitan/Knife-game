@@ -9,25 +9,21 @@ public class Shield : MonoBehaviour
 	[SerializeField] private float _maxSize;
 	[SerializeField] private int _scoreValue;
 	
-	private float _speed;
+	private float _movementSpeed;
 	
 	public int ScoreValue => _scoreValue;
 
 	private void Start()
 	{
-		float randomSpeed = Random.Range(_minSpeed, _maxSpeed);
-		_speed = randomSpeed;
-		
-		Vector2 randomScale = Vector2.one * Random.Range(_minSize, _maxSize);
-		transform.localScale = randomScale;
+		_movementSpeed = Random.Range(_minSpeed, _maxSpeed);
+		transform.localScale = Vector3.one * Random.Range(_minSize, _maxSize);
 	}
 
 	private void Update()
 	{
-		float movementSpeed = _speed;
 		float leftBoundaryX = -9;
-
-		transform.Translate(-movementSpeed * Time.deltaTime, 0, 0);
+		
+		transform.Translate(-_movementSpeed * Time.deltaTime, 0, 0);
 
 		if (transform.localPosition.x < leftBoundaryX)
 		{
