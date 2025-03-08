@@ -7,17 +7,17 @@ public class ScoreManager : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI _highScoreText;
 
 	private int _currentScore;
-	private int HighScore => PlayerPrefs.GetInt("highScore", 0);
+	private int _highScore => PlayerPrefs.GetInt("highScore", 0);
 
-	void OnEnable() => GlobalEvents.EnemyKilled += IncreaseScore;
-	void OnDestroy() => GlobalEvents.EnemyKilled -= IncreaseScore;
+	private void OnEnable() => Knife.EnemyKilled += IncreaseScore;
+	private void OnDisable() => Knife.EnemyKilled -= IncreaseScore;
 	
 	private void Start()
 	{
-		_highScoreText.SetText($"High Score: {HighScore}");
+		_highScoreText.SetText($"High Score: {_highScore}");
 	}
 
-	public void IncreaseScore(int value)
+	private void IncreaseScore(int value)
 	{
 		_currentScore += value;
 		
@@ -28,7 +28,7 @@ public class ScoreManager : MonoBehaviour
 
 	private void UpdateHighScore()
 	{
-		if (_currentScore > HighScore)
+		if (_currentScore > _highScore)
 		{
 			PlayerPrefs.SetInt("highScore", _currentScore);
 			

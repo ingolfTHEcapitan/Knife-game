@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -7,12 +8,11 @@ public class KilledText : MonoBehaviour
 	private TextMeshProUGUI _killedText;
 	
 	private void Awake() => _killedText = GetComponent<TextMeshProUGUI>();
+	
+	private void OnEnable() => Knife.EnemyKilled += EnemyKilled;
+	private void OnDisable() => Knife.EnemyKilled -= EnemyKilled;
 
-	private void OnEnable() => GlobalEvents.EnemyKilled += (_)=> EnemyKilled();
-
-	private void OnDestroy() => GlobalEvents.EnemyKilled -= (_)=> EnemyKilled();
-
-	private void EnemyKilled()
+	private void EnemyKilled(int value)
 	{
 		_killedValue++;
 		_killedText.text = "Killed: " + _killedValue;

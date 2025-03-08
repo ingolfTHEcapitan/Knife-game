@@ -1,20 +1,25 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Knife : MonoBehaviour
 {
+	
 	[SerializeField] private float _horizontalSpeed = 13.0f;
 	[SerializeField] private float _verticalOscillationSpeed = 3.3f;
+	public static event Action<int> EnemyKilled;
+	public static event Action KnifeAttacked;
+	public static event Action EnemyTakeHit;
 	
-	private float _startXposition;
+	private float _startPosition;
 	private bool _isFlying;
 	private BoxCollider2D _boxCollider2D;
-
-	void Awake()
+	
+	private void Awake()
 	{
 		_boxCollider2D = GetComponent<BoxCollider2D>();
 		
-		_startXposition = transform.position.x;
+		_startPosition = transform.position.x;
 	}
 
 	private void Update()
@@ -23,11 +28,11 @@ public class Knife : MonoBehaviour
 		float horizontalMovementLimit = 7.75f;
 		float verticalMovementLimit = 3.25f;
 		
-		if (Input.GetMouseButtonDown(leftButton) && !PauseMenu.Instance.IsPaused)
+		if (Input.GetMouseButtonDown(leftButton) && !PauseMenu.IsPaused)
 		{
 			if (!_isFlying) 
 			{
-				AudioManager.Instance.PlaySound(AudioManager.Instance.Attack);
+				KnifeAttacked?.Invoke();
 			}
 
 			_isFlying = true;
@@ -43,7 +48,7 @@ public class Knife : MonoBehaviour
 			_boxCollider2D.enabled = true;
 			
 			float verticalPosition = Mathf.Sin(_verticalOscillationSpeed * Time.time) * verticalMovementLimit;
-			transform.position = new Vector2(_startXposition, verticalPosition);
+			transform.position = new Vector2(_startPosition, verticalPosition);
 		}
 
 		if (transform.position.x > horizontalMovementLimit)
@@ -51,22 +56,22 @@ public class Knife : MonoBehaviour
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
-
-	private void OnTriggerEnter2D(Collider2D collider)
+	
+	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (!_isFlying && _boxCollider2D.enabled)
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
-		else if (collider.TryGetComponent(out Shield shield))
+		else if (other.TryGetComponent(out Shield shield))
 		{
-			AudioManager.Instance.PlaySound(AudioManager.Instance.Stomp);
+			EnemyTakeHit?.Invoke();
 			
 			_boxCollider2D.enabled = false;
 			
-			GlobalEvents.OnEnemyKilled(shield.ScoreValue);
+			EnemyKilled?.Invoke(shield.ScoreValue);
 
-			Destroy(collider.gameObject);
+			Destroy(other.gameObject);
 			
 			_isFlying = false;
 		}

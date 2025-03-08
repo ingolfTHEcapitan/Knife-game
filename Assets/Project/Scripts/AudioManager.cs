@@ -2,40 +2,43 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-	[Header("Audio Sourse")]
-	[SerializeField] private AudioSource _musicSourse;
-	[SerializeField] private AudioSource _effectsSourse;
+	[Header("Audio Source")]
+	[SerializeField] private AudioSource _musicSource;
+	[SerializeField] private AudioSource _effectsSource;
 
 	[Header("Audio clip")]
 	[SerializeField] private AudioClip _backgroundMusic; 
 	[SerializeField] private AudioClip _stomp;     
 	[SerializeField] private AudioClip _attack;      
+	
+    private void OnEnable()
+    {
+	    PauseMenu.GamePaused += _musicSource.Pause;
+	    PauseMenu.GameUnPaused += _musicSource.UnPause;
+	    Knife.EnemyTakeHit += OnEnemyTakeHit;
+	    Knife.KnifeAttacked += OnKnifeAttacked;
+    }
 
-	public static AudioManager Instance {get; private set;}
-    public AudioClip Attack { get => _attack;}
-    public AudioClip Stomp { get => _stomp;}
-
-    private void Awake() 
+    private void OnDisable()
+    {
+	    PauseMenu.GamePaused -= _musicSource.Pause;
+	    PauseMenu.GameUnPaused -= _musicSource.UnPause;
+	    Knife.EnemyTakeHit -= OnEnemyTakeHit;
+	    Knife.KnifeAttacked -= OnKnifeAttacked;
+    }
+    
+    private void Start()
 	{
-		if (Instance == null)
-			Instance = this;
-		else if (Instance != this)
-			Destroy(gameObject);
+		_musicSource.clip = _backgroundMusic;
+		_musicSource.Play();
 	}
-
-	private void Start()
+    
+    private void OnKnifeAttacked() => PlaySound(_attack);
+    private void OnEnemyTakeHit() => PlaySound(_stomp);
+    
+	private void PlaySound(AudioClip clip)
 	{
-		_musicSourse.clip = _backgroundMusic;
-		_musicSourse.Play();
+		_effectsSource.PlayOneShot(clip); 
+		_effectsSource.pitch = Random.Range(0.9f, 1.2f);
 	}
-
-	public void PlaySound(AudioClip clip)
-	{
-		_effectsSourse.PlayOneShot(clip); 
-		_effectsSourse.pitch = Random.Range(0.9f, 1.2f);
-	}
-
-    public void PauseMusic() => _musicSourse.Pause();
-
-    public void UnPauseMusic() => _musicSourse.UnPause();
 }

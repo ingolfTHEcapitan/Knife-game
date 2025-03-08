@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,18 +6,16 @@ public class PauseMenu : MonoBehaviour
 {
 	[SerializeField] GameObject _pauseMenu;
 	
-	public bool IsPaused {get; private set;}
-	public static PauseMenu Instance {get; private set;}
+	public static bool IsPaused {get; private set;}
+	public static event Action GamePaused;
+	public static event Action GameUnPaused;
 
-	private void Awake() 
+	private void Awake()
 	{
-		if (Instance == null)
-			Instance = this;
-		else if (Instance != this)
-			Destroy(gameObject);
+		IsPaused = false;
 	}
 	
-	void Update()
+	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -25,22 +24,6 @@ public class PauseMenu : MonoBehaviour
 			else
 				PauseGame();
 		}
-	}
-
-	public void ResumeGame()
-	{
-		AudioManager.Instance.UnPauseMusic();
-		_pauseMenu.SetActive(false);
-		Time.timeScale = 1.0f;
-		IsPaused = false;
-	}
-
-	public void PauseGame()
-	{
-		AudioManager.Instance.PauseMusic();
-		_pauseMenu.SetActive(true);
-		Time.timeScale = 0.0f;
-		IsPaused = true;
 	}
 
 	public void Restart()
@@ -53,6 +36,22 @@ public class PauseMenu : MonoBehaviour
 	{
 		Time.timeScale = 1.0f;
 		SceneManager.LoadSceneAsync("Main menu");
+	}
+
+	public void ResumeGame()
+	{
+		GameUnPaused?.Invoke();
+		_pauseMenu.SetActive(false);
+		Time.timeScale = 1.0f;
+		IsPaused = false;
+	}
+	
+	private void PauseGame()
+	{
+		GamePaused?.Invoke();
+		_pauseMenu.SetActive(true);
+		Time.timeScale = 0.0f;
+		IsPaused = true;
 	}
 }
 
