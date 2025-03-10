@@ -1,33 +1,64 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
-public class Shield : MonoBehaviour
+namespace Project.Scripts
 {
-	[SerializeField] private float _minSpeed;
-	[SerializeField] private float _maxSpeed;
-	[SerializeField] private float _minSize;
-	[SerializeField] private float _maxSize;
-	[SerializeField] private int _scoreValue;
-	
-	private float _movementSpeed;
-	
-	public int ScoreValue => _scoreValue;
-
-	private void Start()
+	public class Shield : MonoBehaviour, IDamageable
 	{
-		_movementSpeed = Random.Range(_minSpeed, _maxSpeed);
-		transform.localScale = Vector3.one * Random.Range(_minSize, _maxSize);
-	}
-
-	private void Update()
-	{
-		float leftBoundaryX = -9;
+		[SerializeField] private float _minSpeed;
+		[SerializeField] private float _maxSpeed;
+		[SerializeField] private float _minSize;
+		[SerializeField] private float _maxSize;
+		[SerializeField] private int _scoreValue;
+		[SerializeField] private int _damage = 1;
+		[SerializeField] private int _maxHealth = 1;
 		
-		transform.Translate(-_movementSpeed * Time.deltaTime, 0, 0);
-
-		if (transform.localPosition.x < leftBoundaryX)
+		public static event Action<int> Died;
+		public static event Action TakeHit;
+		
+		private int _currentHealth;
+		private float _movementSpeed;
+		
+		private void Start()
 		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		}     
+			_movementSpeed = Random.Range(_minSpeed, _maxSpeed);
+			transform.localScale = Vector3.one * Random.Range(_minSize, _maxSize);
+			
+			_currentHealth = _maxHealth;
+		}
+
+		private void Update()
+		{
+			float leftBoundaryX = -9;
+		
+			transform.Translate(-_movementSpeed * Time.deltaTime, 0, 0);
+
+			if (transform.localPosition.x < leftBoundaryX)
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			}     
+		}
+
+		private void OnTriggerEnter2D(Collider2D other)
+		{
+			if (other.TryGetComponent(out Knife knife))
+			{
+				knife.TakeDamage(_damage);
+			}
+		}
+		
+		public void TakeDamage(int damage)
+		{
+			_currentHealth -= damage;
+			TakeHit?.Invoke();
+			
+			if (_currentHealth <= 0 )
+			{
+				Died?.Invoke(_scoreValue);
+				Destroy(gameObject);
+			}
+		}
 	}
 }

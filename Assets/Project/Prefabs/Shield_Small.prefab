@@ -183,3 +183,5 @@ MonoBehaviour:
   _minSize: 1.5
   _maxSize: 3
   _scoreValue: 1
+  _damage: 1
+  _maxHealth: 1

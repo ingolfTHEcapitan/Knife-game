@@ -1,20 +1,22 @@
-using System;
 using TMPro;
 using UnityEngine;
 
-public class KilledText : MonoBehaviour
+namespace Project.Scripts
 {
-	private int _killedValue;
-	private TextMeshProUGUI _killedText;
-	
-	private void Awake() => _killedText = GetComponent<TextMeshProUGUI>();
-	
-	private void OnEnable() => Knife.EnemyKilled += EnemyKilled;
-	private void OnDisable() => Knife.EnemyKilled -= EnemyKilled;
-
-	private void EnemyKilled(int value)
+	public class KilledText : MonoBehaviour
 	{
-		_killedValue++;
-		_killedText.text = "Killed: " + _killedValue;
+		private int _killedValue;
+		private TextMeshProUGUI _killedText;
+	
+		private void Awake() => _killedText = GetComponent<TextMeshProUGUI>();
+	
+		private void OnEnable() => Shield.Died += EnemyKilled;
+		private void OnDisable() => Shield.Died -= EnemyKilled;
+
+		private void EnemyKilled(int value)
+		{
+			_killedValue++;
+			_killedText.text = "Killed: " + _killedValue;
+		}
 	}
 }

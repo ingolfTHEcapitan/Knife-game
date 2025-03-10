@@ -567,6 +567,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _horizontalSpeed: 15
   _verticalOscillationSpeed: 3.3
+  _damage: 1
+  _maxHealth: 1
 --- !u!212 &387554259
 SpriteRenderer:
   m_ObjectHideFlags: 0
