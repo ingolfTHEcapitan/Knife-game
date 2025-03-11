@@ -1,95 +1,89 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 namespace Project.Scripts
 {
-	[RequireComponent(typeof(BoxCollider2D))]
 	public class Knife : MonoBehaviour, IDamageable
 	{
-		public enum KnifeState
+		private enum State
 		{
 			MovingUpDown,
 			Flying
 		}
 		
 		[SerializeField] private float _horizontalSpeed = 13.0f;
-		[SerializeField] private float _verticalOscillationSpeed = 3.3f;
+		[SerializeField] private float _verticalSpeed = 3.3f;
 		[SerializeField] private int _damage = 1;
 		[SerializeField] private int _maxHealth = 1;
 		
 		public static event Action Flying;
-		private KnifeState _currentState;
+		
+		private State _currentState;
 		private int _currentHealth;
 		private float _startPosition;
-		private bool _isFlying;
-		private float _horizontalMovementLimit = 7.75f;
-		private float _verticalMovementLimit = 3.25f;
-		private BoxCollider2D _boxCollider2D;
+		private float _verticalAmplitude = 3.25f;
 	
 		private void Awake()
 		{
-			_boxCollider2D = GetComponent<BoxCollider2D>();
 			_currentHealth = _maxHealth;
 			_startPosition = transform.position.x;
-
-			_currentState = KnifeState.MovingUpDown;
+			_currentState = State.MovingUpDown;
 		}
 		
 		private void Update()
 		{
 			HandleInput();
 			HandleMovement();
-
 		}
 		
 		private void HandleMovement()
 		{
 			switch (_currentState)
 			{
-				case KnifeState.MovingUpDown:
-					float verticalPosition = Mathf.Sin(_verticalOscillationSpeed * Time.time) * _verticalMovementLimit;
-					transform.position = new Vector2(_startPosition, verticalPosition);
+				case State.MovingUpDown:
+					float verticalOffset = Mathf.Sin(_verticalSpeed * Time.time) * _verticalAmplitude;
+					transform.position = new Vector2(_startPosition, verticalOffset);
 					break;
-				case KnifeState.Flying:
+				case State.Flying:
 					transform.Translate(_horizontalSpeed * Time.deltaTime , 0, 0);
 					break;
-			}
-			
-			if (transform.position.x > _horizontalMovementLimit)
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			}
 		}
 		
 		private void HandleInput()
 		{
-			if (_currentState == KnifeState.MovingUpDown && Input.GetMouseButtonDown(0) && !PauseMenu.IsPaused)
+			if (_currentState == State.MovingUpDown && Input.GetMouseButtonDown(0) && !PauseMenu.IsPaused)
 			{
-				_currentState = KnifeState.Flying;
+				_currentState = State.Flying;
+				Flying?.Invoke();
 			}
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
 		{
-			if (other.TryGetComponent(out Shield shield))
+			if (other.TryGetComponent(out Shield shield) && _currentState == State.Flying)
 			{
-				if (_currentState == KnifeState.Flying)
-				{
-					shield.TakeDamage(_damage);
-					_currentState = KnifeState.MovingUpDown;
-				}
+				shield.TakeDamage(_damage);
+				_currentState = State.MovingUpDown;
+			}
+			
+			if (other.CompareTag("RightBoundary") && _currentState == State.Flying)
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			}
 		}
 		
 		public void TakeDamage(int damage)
 		{
-			if (_currentState == KnifeState.MovingUpDown)
+			if (_currentState == State.MovingUpDown && Mathf.Approximately(transform.position.x, _startPosition))
 			{
 				_currentHealth -= damage;
 			
 				if (_currentHealth <= 0 )
 				{
+					Destroy(gameObject);
 					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 				}
 			}

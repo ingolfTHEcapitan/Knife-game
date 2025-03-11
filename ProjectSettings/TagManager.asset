@@ -4,9 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Audio
-  - Score
-  - Shield
+  - LeftBoundary
+  - RightBoundary
   layers:
   - Default
   - TransparentFX

@@ -11,9 +11,9 @@ namespace Project.Scripts
 		[SerializeField] private float _maxSpeed;
 		[SerializeField] private float _minSize;
 		[SerializeField] private float _maxSize;
-		[SerializeField] private int _scoreValue;
 		[SerializeField] private int _damage = 1;
 		[SerializeField] private int _maxHealth = 1;
+		[SerializeField] private int _scoreValue = 1;
 		
 		public static event Action<int> Died;
 		public static event Action TakeHit;
@@ -31,14 +31,7 @@ namespace Project.Scripts
 
 		private void Update()
 		{
-			float leftBoundaryX = -9;
-		
 			transform.Translate(-_movementSpeed * Time.deltaTime, 0, 0);
-
-			if (transform.localPosition.x < leftBoundaryX)
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-			}     
 		}
 
 		private void OnTriggerEnter2D(Collider2D other)
@@ -46,6 +39,11 @@ namespace Project.Scripts
 			if (other.TryGetComponent(out Knife knife))
 			{
 				knife.TakeDamage(_damage);
+			}
+			
+			if (other.CompareTag("LeftBoundary"))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			}
 		}
 		

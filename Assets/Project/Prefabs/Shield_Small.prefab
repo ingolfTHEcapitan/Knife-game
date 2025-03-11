@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4696568617667176137}
   m_Layer: 0
   m_Name: Shield_Small
-  m_TagString: Shield
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -182,6 +182,6 @@ MonoBehaviour:
   _maxSpeed: 15
   _minSize: 1.5
   _maxSize: 3
-  _scoreValue: 1
   _damage: 1
   _maxHealth: 1
+  _scoreValue: 1
