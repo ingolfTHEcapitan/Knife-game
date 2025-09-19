@@ -19,7 +19,7 @@ namespace Project.Scripts
 	
 		private void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Tab))
 			{
 				if (IsPaused) 
 					ResumeGame();
